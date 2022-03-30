@@ -4,6 +4,9 @@
 #include "game.h"
 #include "notGame.h"
 
+// Sprites
+PLAYER player;
+
 // Game Scenes
 
 void characterSelect() {
@@ -80,5 +83,19 @@ void drawRival() {
 }
 
 void drawSelector() {
+
+}
+
+// Jumping Functions
+void jumpHeight(int speed) {
+    if (speed < 25) {
+        player.path = 0;
+    } else if (speed < 35) {
+        player.path = 1;
+    } else if (speed < 45) {
+        player.path = 2
+    } else {
+        player.path = 3
+    }
 
 }

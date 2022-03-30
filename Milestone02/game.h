@@ -13,6 +13,8 @@ typedef struct {
     int cdel;
     int width;
     int height;
+    int speed;
+    int path;
     int aniCounter;
     int aniState;
     int prevAniState;
