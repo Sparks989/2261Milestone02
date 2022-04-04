@@ -3,24 +3,12 @@
 #include "mode0.h"
 #include "game.h"
 #include "notGame.h"
+#include "Background.h"
+#include "SpriteSheet.h"
+#include "print.h"
 
 // Prototypes.
 void initialize();
-
-// State Prototypes.
-void goToStart();
-void goToInstructions()
-void goToCharacterSelect();
-void goToGreen();
-void goToBlue();
-void goToBlack();
-void goToPause();
-void goToWin();
-void goToLose();
-
-// States.
-enum {START, INSTRUCTIONS, CHARACTER, GREEN, BLUE, BLACK, PAUSE, WIN, LOSE};
-int state;
 
 // Button Variables.
 unsigned short buttons;
@@ -42,8 +30,23 @@ int main() {
         case START:
             start();
             break;
-        case GAME:
-            game();
+        case INSTRUCTIONS:
+            instructions();
+            break;
+        case CHARACTER:
+            characterSelect();
+            break;
+        case EASY:
+            timer++;
+            green();
+            break;
+        case MEDIUM:
+            timer++;
+            blue();
+            break;
+        case HARD:
+            timer++;
+            black();
             break;
         case PAUSE:
             pause();
@@ -78,61 +81,15 @@ void initialize() {
 
     hideSprites();
 
-    REG_DISPCTL = MODE4 | BG0_ENABLE | SPRITE_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
 
     buttons = BUTTONS;
     oldButtons = 0;
 
+    hOff = 0;
+    vOff = 0;
+
     mgba_open();
 
     goToStart();
-}
-
-// Sets up the start state.
-void goToStart() {
-    REG_DISPCTL = MODE4 | SPRITE_ENABLE;
-    state = START;
-}
-
-void goToInstructions() {
-    REG_DISPCTL = MODE4 | SPRITE_DISABLE;
-    state = INSTRUCTIONS;
-}
-
-void goToCharacterSelect() {
-    REG_DISPCTL = MODE4 | SPRITE_ENABLE;
-    state = CHARACTER;
-}
-
-// Sets up the game state.
-void goToGreen() {
-    REG_DISPCTL = MODE0 | SPRITE_ENABLE;
-    state = GREEN;
-}
-
-void goToBlue() {
-    REG_DISPCTL = MODE0 | SPRITE_ENABLE;
-    state = BLUE;
-}
-
-void goToBlack() {
-    REG_DISPCTL = MODE0 | SPRITE_ENABLE;
-    state = BLACK;
-}
-
-// Sets up the pause state.
-void goToPause() {
-    REG_DISPCTL = MODE4 | SPRITE_DISABLE;
-    state = PAUSE;
-}
-
-void goToWin() {
-    REG_DISPCTL = MODE4 | SPRITE_DISABLE;
-    state = WIN;
-}
-
-// Sets up the lose state.
-void goToLose() {
-    REG_DISPCTL = MODE4 | SPRITE_DISABLE;
-    state = LOSE;
 }

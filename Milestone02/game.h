@@ -15,11 +15,8 @@ typedef struct {
     int height;
     int speed;
     int path;
-    int aniCounter;
-    int aniState;
-    int prevAniState;
-    int curFrame;
-    int numFrames;
+    int spriteX;
+    int spriteY;
     int active;
 } PLAYER;
 
@@ -31,10 +28,17 @@ typedef struct {
     int width;
     int height;
     int active;
+    int position;
+    int spriteX;
+    int spriteY;
 } SELECTOR;
 
 // Variables
 #define SELECTORCOUNT 3
+int timer;
+int hOff;
+int vOff;
+#define mapWidth 512
 
 // Enums
 enum {SPRITEFRONT, SPRITEBACK, SPRITERIGHT, SPRITELEFT, SPRITEIDLE};
@@ -44,4 +48,11 @@ void greenInit();
 void blueInit();
 void blackInit();
 void playerInit();
-void rivalInit();
+void selectorInit();
+void updateGame();
+void updatePlayer();
+void updateSelector();
+void drawGame();
+void drawPlayer();
+void drawSelector();
+void jumpHeight(int speed);
