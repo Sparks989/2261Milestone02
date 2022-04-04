@@ -1401,7 +1401,20 @@ void win();
 void lose();
 
 
+void goToStart();
+void goToInstructions();
+void goToCharacterSelect();
+void goToGreen();
+void goToBlue();
+void goToBlack();
+void goToPause();
+void goToWin();
+void goToLose();
+
+
 int instructionPage;
+int state;
+enum {START, INSTRUCTIONS, CHARACTER, EASY, MEDIUM, HARD, PAUSE, WIN, LOSE};
 # 6 "game.c" 2
 # 1 "CollisionMap.h" 1
 # 21 "CollisionMap.h"
@@ -1428,7 +1441,9 @@ void characterSelect() {
 
 
 void green() {
-
+    updateGame();
+    drawGame();
+    mgba_printf("%d", player.speed);
 }
 
 
@@ -1465,7 +1480,7 @@ void playerInit() {
     player.row = 32;
     player.col = 16;
     player.width = 32;
-    player.height = 64;
+    player.height = 32;
     player.speed = 5;
     player.path = 0;
     player.spriteX = 0;
@@ -1504,77 +1519,19 @@ void updatePlayer() {
 
 
     if (player.speed < 25) {
-        if (!timer %20) {
+        if (!(timer %4)) {
             hOff++;
         }
-    } else if (player.speed < 35) {
-        if (!timer %15) {
+    } else if (player.speed <= 30) {
+        if (!(timer %2)) {
             hOff++;
         }
-    } else if (player.speed < 45) {
-        if (!timer %10) {
+    } else if (player.speed <= 45) {
+        if ((timer)) {
             hOff++;
         }
     }
-
-
-    if (collisionCheck(*collisionMap, 512, player.col, player.row, player.width, player.height, hOff, vOff)) {
-
-        jumpHeight(player.speed);
-        if (!player.path) {
-            if (player.speed > 35) {
-                vOff++;
-            } else {
-                vOff--;
-            }
-        } else if (player.path == 1) {
-            if (player.path > 30) {
-                vOff++;
-            } else {
-                vOff--;
-            }
-        } else if (player.path == 2) {
-            vOff--;
-        }
-    } else if (collisionCheck(*collisionMap, 512, player.col, player.row, player.width, player.height/2, hOff, vOff) == 1) {
-
-        if (player.speed < 25) {
-            if (!timer %20) {
-                vOff--;
-            }
-        } else if (player.speed < 35) {
-            if (!timer %15) {
-                vOff--;
-            }
-        } else if (player.speed < 45) {
-            if (!timer %10) {
-                vOff--;
-            }
-        }
-    } else if (collisionCheck(*collisionMap, 512, player.col, player.row, player.width, player.height/2, hOff, vOff) == 2) {
-
-        vOff = vOff;
-    } else if (collisionCheck(*collisionMap, 512, player.col, player.row, player.width, player.height/2, hOff, vOff) == 3) {
-
-        if (player.speed < 25) {
-            if (!timer %20) {
-                vOff++;
-            }
-        } else if (player.speed < 35) {
-            if (!timer %15) {
-                vOff++;
-            }
-        } else if (player.speed < 45) {
-            if (!timer %10) {
-                vOff++;
-            }
-        }
-    }
-
-
-
-
-
+# 182 "game.c"
 }
 
 void updateSelector() {

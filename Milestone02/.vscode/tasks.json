@@ -6,8 +6,8 @@
         {
             "label": "build run",
             "type": "shell",
-            //"command": "C:/Users/d55sp/OneDrive/Documents/Gatech/CS2261/mGBA.exe ./Project.gba",
-            "command": "C:/Users/Drew/Documents/Gatech/CS2261/mGBA.exe ./Project.gba",
+            "command": "C:/Users/d55sp/OneDrive/Documents/Gatech/CS2261/mGBA.exe ./Project.gba",
+            //"command": "C:/Users/Drew/Documents/Gatech/CS2261/mGBA.exe ./Project.gba",
             // add the mGBA.exe exact path to the above line,
             // before "./Project.gba"!
             // make sure there is a space between the exact path and "./Project.gba".

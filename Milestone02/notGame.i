@@ -1416,7 +1416,16 @@ int instructionPage;
 int state;
 enum {START, INSTRUCTIONS, CHARACTER, EASY, MEDIUM, HARD, PAUSE, WIN, LOSE};
 # 6 "notGame.c" 2
+# 1 "BGMap.h" 1
+# 22 "BGMap.h"
+extern const unsigned short BGMapTiles[96];
 
+
+extern const unsigned short BGMapMap[4096];
+
+
+extern const unsigned short BGMapPal[256];
+# 7 "notGame.c" 2
 
 
 
@@ -1425,7 +1434,6 @@ void start() {
     if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0))))) {
         goToCharacterSelect();
     }
-    mgba_printf("%d", hOff);
 }
 
 void instructions() {
@@ -1460,7 +1468,7 @@ void lose() {
 void goToStart() {
     vOff = 0;
     hOff = 0;
-    (*(unsigned short *)0x4000000) = (1<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
     state = START;
     timer = 0;
 }
@@ -1469,14 +1477,14 @@ void goToInstructions() {
     hOff = 0;
     vOff = 160;
     instructionPage = 0;
-    (*(unsigned short *)0x4000000) = (0<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
     state = INSTRUCTIONS;
 }
 
 void goToCharacterSelect() {
     hOff = 240;
     vOff = 0;
-    (*(unsigned short *)0x4000000) = (1<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
     state = CHARACTER;
 }
 
@@ -1484,17 +1492,20 @@ void goToCharacterSelect() {
 void goToGreen() {
     hOff = 0;
     vOff = 0;
-    (*(unsigned short *)0x4000000) = (1<<12) | (0<<8) | (1<<9);
+    DMANow(3, BGMapPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, BGMapTiles, &((charblock *)0x6000000)[0], 192 / 2);
+    DMANow(3, BGMapMap, &((screenblock *)0x6000000)[28], 1024 * 4);
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<8);
     state = EASY;
 }
 
 void goToBlue() {
-    (*(unsigned short *)0x4000000) = (1<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<10);
     state = MEDIUM;
 }
 
 void goToBlack() {
-    (*(unsigned short *)0x4000000) = (1<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<12) | (1<<11);
     state = HARD;
 }
 
@@ -1502,17 +1513,17 @@ void goToBlack() {
 void goToPause() {
     hOff = 240;
     vOff = 160;
-    (*(unsigned short *)0x4000000) = (0<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
     state = PAUSE;
 }
 
 void goToWin() {
-    (*(unsigned short *)0x4000000) = (0<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
     state = WIN;
 }
 
 
 void goToLose() {
-    (*(unsigned short *)0x4000000) = (0<<12);
+    (*(unsigned short *)0x4000000) = 0 | (1<<8);
     state = LOSE;
 }

@@ -1441,6 +1441,16 @@ void mgba_break(void);
 uint8_t mgba_open(void);
 void mgba_close(void);
 # 9 "main.c" 2
+# 1 "BGMap.h" 1
+# 22 "BGMap.h"
+extern const unsigned short BGMapTiles[96];
+
+
+extern const unsigned short BGMapMap[4096];
+
+
+extern const unsigned short BGMapPal[256];
+# 10 "main.c" 2
 
 
 void initialize();

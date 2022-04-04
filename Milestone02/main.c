@@ -6,6 +6,7 @@
 #include "Background.h"
 #include "SpriteSheet.h"
 #include "print.h"
+#include "BGMap.h"
 
 // Prototypes.
 void initialize();

@@ -3,7 +3,7 @@
 #include "mode0.h"
 #include "game.h"
 #include "notGame.h"
-
+#include "BGMap.h"
 
 
 
@@ -12,7 +12,6 @@ void start() {
     if (BUTTON_PRESSED(BUTTON_A)) {
         goToCharacterSelect();
     }
-    mgba_printf("%d", hOff);
 }
 
 void instructions() {
@@ -47,7 +46,7 @@ void lose() {
 void goToStart() {
     vOff = 0;
     hOff = 0;
-    REG_DISPCTL = SPRITE_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
     state = START;
     timer = 0;
 }
@@ -56,14 +55,14 @@ void goToInstructions() {
     hOff = 0;
     vOff = 160;
     instructionPage = 0;
-    REG_DISPCTL = SPRITE_DISABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
     state = INSTRUCTIONS;
 }
 
 void goToCharacterSelect() {
     hOff = 240;
     vOff = 0;
-    REG_DISPCTL = SPRITE_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
     state = CHARACTER;
 }
 
@@ -71,17 +70,20 @@ void goToCharacterSelect() {
 void goToGreen() {
     hOff = 0;
     vOff = 0;
-    REG_DISPCTL = SPRITE_ENABLE | BG0_DISABLE | BG1_ENABLE;
+    DMANow(3, BGMapPal, PALETTE, 256);
+    DMANow(3, BGMapTiles, &CHARBLOCK[0], BGMapTilesLen / 2);
+    DMANow(3, BGMapMap, &SCREENBLOCK[28], 1024 * 4);
+    REG_DISPCTL = MODE0 | SPRITE_ENABLE | BG0_ENABLE;
     state = EASY;
 }
 
 void goToBlue() {
-    REG_DISPCTL = SPRITE_ENABLE;
+    REG_DISPCTL = MODE0 | SPRITE_ENABLE | BG2_ENABLE;
     state = MEDIUM;
 }
 
 void goToBlack() {
-    REG_DISPCTL = SPRITE_ENABLE;
+    REG_DISPCTL = MODE0 | SPRITE_ENABLE | BG3_ENABLE;
     state = HARD;
 }
 
@@ -89,17 +91,17 @@ void goToBlack() {
 void goToPause() {
     hOff = 240;
     vOff = 160;
-    REG_DISPCTL = SPRITE_DISABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
     state = PAUSE;
 }
 
 void goToWin() {
-    REG_DISPCTL = SPRITE_DISABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
     state = WIN;
 }
 
 // Sets up the lose state.
 void goToLose() {
-    REG_DISPCTL = SPRITE_DISABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
     state = LOSE;
 }
